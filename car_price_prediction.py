@@ -50,3 +50,12 @@ X_test_scaled = scaler.transform(X_test)
 
 # 8. Model eğitimi ve optimizasyon
 
+# Random Forest
+rf_params = {
+    'n_estimators': [100, 200, 300],
+    'max_depth': [10, 20, None],
+    'min_samples_split': [2, 5, 10]
+}
+rf_model = RandomizedSearchCV(RandomForestRegressor(random_state=42), rf_params, n_iter=10, cv=3, n_jobs=-1)
+rf_model.fit(X_train, y_train)
+y_pred_rf = rf_model.predict(X_test)
