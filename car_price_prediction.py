@@ -59,3 +59,13 @@ rf_params = {
 rf_model = RandomizedSearchCV(RandomForestRegressor(random_state=42), rf_params, n_iter=10, cv=3, n_jobs=-1)
 rf_model.fit(X_train, y_train)
 y_pred_rf = rf_model.predict(X_test)
+
+# SVM
+svm_params = {
+    'C': [10, 100],
+    'gamma': ['scale', 0.01],
+    'kernel': ['rbf']
+}
+svm_model = RandomizedSearchCV(SVR(), svm_params, n_iter=4, cv=3, n_jobs=-1)
+svm_model.fit(X_train_scaled, y_train)
+y_pred_svm = svm_model.predict(X_test_scaled)
