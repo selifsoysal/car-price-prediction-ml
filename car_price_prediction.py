@@ -69,3 +69,11 @@ svm_params = {
 svm_model = RandomizedSearchCV(SVR(), svm_params, n_iter=4, cv=3, n_jobs=-1)
 svm_model.fit(X_train_scaled, y_train)
 y_pred_svm = svm_model.predict(X_test_scaled)
+
+# KNN
+knn_params = {
+    'n_neighbors': list(range(3, 15))
+}
+knn_model = RandomizedSearchCV(KNeighborsRegressor(), knn_params, n_iter=5, cv=3, n_jobs=-1)
+knn_model.fit(X_train_scaled, y_train)
+y_pred_knn = knn_model.predict(X_test_scaled)
