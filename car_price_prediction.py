@@ -82,3 +82,19 @@ y_pred_knn = knn_model.predict(X_test_scaled)
 lr_model = LinearRegression()
 lr_model.fit(X_train_scaled, y_train)
 y_pred_lr = lr_model.predict(X_test_scaled)
+
+# 9. Değerlendirme fonksiyonu
+def evaluate_model(name, y_true_log, y_pred_log):
+    y_true = np.expm1(y_true_log)
+    y_pred = np.expm1(y_pred_log)
+    r2 = r2_score(y_true, y_pred)
+    rmse = np.sqrt(mean_squared_error(y_true, y_pred))
+    print(f"{name} için R2 Skoru: {r2:.4f}")
+    print(f"{name} için RMSE: {rmse:.2f}")
+    print("-" * 40)
+
+# 10. Modelleri değerlendir
+evaluate_model("Random Forest", y_test, y_pred_rf)
+evaluate_model("SVM", y_test, y_pred_svm)
+evaluate_model("KNN", y_test, y_pred_knn)
+evaluate_model("Linear Regression", y_test, y_pred_lr)
