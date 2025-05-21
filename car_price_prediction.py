@@ -98,3 +98,24 @@ evaluate_model("Random Forest", y_test, y_pred_rf)
 evaluate_model("SVM", y_test, y_pred_svm)
 evaluate_model("KNN", y_test, y_pred_knn)
 evaluate_model("Linear Regression", y_test, y_pred_lr)
+
+# 11. Yeni araç örneğini tahmin et
+new_car = pd.DataFrame([{
+    "year": 2015,
+    "mileage": 49850,
+    "transmission": "Automatic",
+    "fuelType": "Diesel",
+    "engineSize": 2.1
+}])
+
+new_car["car_age"] = 2025 - new_car["year"]
+new_car["mileage_per_year"] = new_car["mileage"] / new_car["car_age"]
+new_car.drop("year", axis=1, inplace=True)
+
+new_car = pd.get_dummies(new_car, columns=["transmission", "fuelType"], drop_first=False)
+
+# Eğitimdeki sütunlarla eşleştirme
+missing_cols = set(X.columns) - set(new_car.columns)
+for col in missing_cols:
+    new_car[col] = 0
+new_car = new_car[X.columns]  # Aynı sıralama
