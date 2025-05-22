@@ -119,3 +119,24 @@ missing_cols = set(X.columns) - set(new_car.columns)
 for col in missing_cols:
     new_car[col] = 0
 new_car = new_car[X.columns]  # Aynı sıralama
+
+# Ölçekleme
+new_car_scaled = scaler.transform(new_car)
+
+rf_pred = np.expm1(rf_model.predict(new_car)[0])
+svm_pred = np.expm1(svm_model.predict(new_car_scaled)[0])
+knn_pred = np.expm1(knn_model.predict(new_car_scaled)[0])
+lr_pred = np.expm1(lr_model.predict(new_car_scaled)[0])
+
+print(f"Tahmini Fiyat (Random Forest): {rf_pred:.2f}")
+print(f"Tahmini Fiyat (SVM): {svm_pred:.2f}")
+print(f"Tahmini Fiyat (KNN): {knn_pred:.2f}")
+print(f"Tahmini Fiyat (Linear Regression): {lr_pred:.2f}")
+
+
+y_test_real = np.expm1(y_test)
+y_pred_rf_real = np.expm1(y_pred_rf)
+y_pred_rf_real = np.expm1(y_pred_rf)
+y_pred_svm_real = np.expm1(y_pred_svm)
+y_pred_knn_real = np.expm1(y_pred_knn)
+y_pred_lr_real = np.expm1(y_pred_lr)
