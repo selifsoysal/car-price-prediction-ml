@@ -32,23 +32,23 @@ df["mileage_per_year"] = df["mileage_per_year"].fillna(df["mileage_per_year"].me
 # Gereksiz sütunlar çıkartılır.
 df.drop(["year", "model"], axis=1, inplace=True)
 
-# 4. One-hot encoding/Kategorik verileri dönüştür
+# One-hot encoding yapılır.
 df = pd.get_dummies(df, columns=["transmission", "fuelType"], drop_first=False)
 
-# 5. Fiyatı logaritmik olarak dönüştür
+# Fiyat logaritmik olarak dönüştürülür.
 y = np.log1p(df["price"])  # log(price + 1)
 X = df.drop("price", axis=1)
 
-# 6. Eğitim ve test ayır
+# Eğitim ve test.
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
 
-# 7. Ölçekleme (SVM, KNN, Linear için)
+# Ölçekleme (SVM, KNN, Linear için)
 scaler = StandardScaler()
 X_train_scaled = scaler.fit_transform(X_train)
 X_test_scaled = scaler.transform(X_test)
 
 
-# 8. Model eğitimi ve optimizasyon
+# Model eğitimi ve optimizasyon
 
 # Random Forest
 rf_params = {
@@ -83,7 +83,7 @@ lr_model = LinearRegression()
 lr_model.fit(X_train_scaled, y_train)
 y_pred_lr = lr_model.predict(X_test_scaled)
 
-# 9. Değerlendirme fonksiyonu
+# Değerlendirme fonksiyonu
 def evaluate_model(name, y_true_log, y_pred_log):
     y_true = np.expm1(y_true_log)
     y_pred = np.expm1(y_pred_log)
@@ -93,13 +93,13 @@ def evaluate_model(name, y_true_log, y_pred_log):
     print(f"{name} için RMSE: {rmse:.2f}")
     print("-" * 40)
 
-# 10. Modelleri değerlendir
+# Modeller değerlendirilir.
 evaluate_model("Random Forest", y_test, y_pred_rf)
 evaluate_model("SVM", y_test, y_pred_svm)
 evaluate_model("KNN", y_test, y_pred_knn)
 evaluate_model("Linear Regression", y_test, y_pred_lr)
 
-# 11. Yeni araç örneğini tahmin et
+# Yeni araç örneğini tahmin et
 new_car = pd.DataFrame([{
     "year": 2015,
     "mileage": 49850,
